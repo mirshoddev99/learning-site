@@ -1,0 +1,25 @@
+docker run -it --rm --name memcached -p 11211:11211 memcached -m 64 // for memcache backend
+docker run -it --rm --name redis -p 6379:6379 redis // for redis backend
+
+Memcached runs on port 11211 by default. The -p option is used to publish the 11211 port to the same
+host interface port. The -m option is used to limit the memory for the container to 64 MB. Memcached
+runs in memory, and it is allotted a specified amount of RAM. When the allotted RAM is full, Memcached
+starts removing the oldest data to store new data. If you want to run the command in detached
+mode (in the background of your terminal) you can use the -d option.
+
+
+Usage of cache:
+>>> from django.core.cache import cache
+>>> cache.set('musician', 'Django Reinhardt', 20)
+You access the default cache backend and use set(key, value, timeout) to store a key named
+'musician' with a value that is the string 'Django Reinhardt' for 20 seconds. If you don’t specify a
+timeout, Django uses the default timeout specified for the cache backend in the CACHES setting.
+
+Now, execute the following code:
+>>> cache.get('musician')
+'Django Reinhardt'
+
+You retrieve the key from the cache. Wait for 20 seconds and execute the same code:
+>>> cache.get('musician')
+No value is returned this time. The 'musician' cache key has expired and the get() method returns
+None because the key is not in the cache anymore.

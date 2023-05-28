@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {{ course.title }}
+{% endblock %}
+
+
+{% block content %}
+  <h1>
+    {{ course.title }} course
+  </h1>
+<br>
+
+<div class="contents">
+  <h3>Modules</h3>
+  <ul id="modules">
+    {% for m in course.modules.all %}
+    <li data-id="{{ m.id }}" {% if m == module %}class="selected"{% endif %}>
+      <a href="{% url 'students:student_module_content' course.id m.id %}">
+        <span>Module <span class="order">{{ m.order|add:1 }}</span></span>
+        <br>{{ m.title }}
+      </a>
+    </li>
+    {% empty %}
+    <li>No modules yet.</li>
+    {% endfor %}
+  </ul>
+
+  <p><a href="{% url 'students:student_course_list' %}" class="button">Back</a></p>
+</div>
+{% endblock %}

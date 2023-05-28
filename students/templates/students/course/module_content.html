@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load cache %}
+
+{% block title %}
+{{ module.title }}
+{% endblock %}
+
+{% block content %}
+<h1>
+    {{ module.title }} module and contents
+</h1>
+<br>
+
+<div class="module">
+    <!--  caching template  -->
+    <!--  600 is timeout in seconds. module_contents is name. module is unique identifier for caching  -->
+    {% cache 600 module_contents module %}
+          {% for content in module.contents.all %}
+            {% with item=content.item %}
+              <h2><em>{{ item.title }}</em></h2>
+              {{ item.render }}
+                <hr>
+            {% endwith %}
+            <br>
+          {% endfor %}
+          <p><a href="{% url 'students:student_course_detail' course.id %}" class="button">Back modules</a></p>
+    {% endcache %}
+
+  </div>
+{% endblock %}
